@@ -1,26 +1,20 @@
 <?php
-// Menyertakan koneksi database
 require_once 'koneksi.php';
 session_start();
 
-// Periksa apakah session `user_id` ada (user telah login)
 if (!isset($_SESSION['user_id'])) {
-    // Jika tidak ada, arahkan kembali ke halaman login
     header("Location: index.php");
     exit;
 }
 
 try {
-    // Query untuk mengambil data
     $sql = "SELECT id_kendaraan, nomor_polisi, jenis_kendaraan, akhir_masuk, akhir_keluar, created_at 
             FROM kendaraan";
 	
 	$sql .= " ORDER BY id_kendaraan DESC";
-    // Eksekusi query
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
 
-    // Mendapatkan hasil dalam bentuk array asosiatif
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Terjadi kesalahan: " . $e->getMessage());
